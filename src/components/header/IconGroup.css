@@ -1,0 +1,4 @@
+  .logout-button:hover {
+    transform: translateX(10px);
+    color: #f56285;
+  }

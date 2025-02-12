@@ -1,0 +1,8 @@
+{
+  "short_name": "Flone React",
+  "name": "BloomGift - Nền tảng mua & bán trực tuyến dành cho các cửa hàng bán hoa",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
