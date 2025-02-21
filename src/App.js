@@ -22,7 +22,6 @@ import DistanseFeeList from "./components/sidebar/DistanceFee/DistanseFeeList";
 import PaymentList from "./components/sidebar/PaymentManager/PaymentList";
 import UpdateProduct from "./components/sidebar/ProductManager/UpdateProduct";
 
-
 // // home pages
 // const HomeFashion = lazy(() => import("./pages/home/HomeFashion"));
 // const HomeFashionTwo = lazy(() => import("./pages/home/HomeFashionTwo"));
@@ -124,7 +123,7 @@ import UpdateProduct from "./components/sidebar/ProductManager/UpdateProduct";
 // const Checkout = lazy(() => import("./pages/other/Checkout"));
 
 const NotFound = lazy(() => import("./pages/other/Login"));
-const publicUrl = typeof process !== 'undefined' ? process.env.REACT_APP_PUBLIC_URL || "" : "";
+const publicUrl = typeof process !== "undefined" ? process.env.REACT_APP_PUBLIC_URL || "" : "";
 
 const App = (props) => {
   useEffect(() => {
@@ -133,8 +132,8 @@ const App = (props) => {
         languages: {
           en: require("./translations/english.json"),
           fn: require("./translations/french.json"),
-          de: require("./translations/germany.json")
-        }
+          de: require("./translations/germany.json"),
+        },
       })
     );
   });
@@ -155,26 +154,11 @@ const App = (props) => {
               }
             >
               <Switch>
-                <Route
-                  path={publicUrl + "/login"}
-                  component={LoginPage}
-                />
-                <Route
-                  path={publicUrl + "/forget-password"}
-                  component={ForgetPasswordForm}
-                />
-                <Route
-                  path={publicUrl + "/reset-password"}
-                  component={ResetPasswordForm}
-                />
-                <Route
-                  path={publicUrl + "/signInWithGoogle"}
-                  component={SignInWithGoogle}
-                />
-                <Route
-                  path={publicUrl + "/not-found"}
-                  component={NotFound}
-                />
+                <Route path={publicUrl + "/login"} component={LoginPage} />
+                <Route path={publicUrl + "/forget-password"} component={ForgetPasswordForm} />
+                <Route path={publicUrl + "/reset-password"} component={ResetPasswordForm} />
+                <Route path={publicUrl + "/signInWithGoogle"} component={SignInWithGoogle} />
+                <Route path={publicUrl + "/not-found"} component={NotFound} />
                 <Route path="/banhang">
                   <SalerSidebar>
                     <Switch>
@@ -202,7 +186,7 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  dispatch: PropTypes.func
+  dispatch: PropTypes.func,
 };
 
 export default connect()(multilanguage(App));
