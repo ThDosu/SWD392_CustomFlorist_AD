@@ -176,6 +176,7 @@ const PromotionList = () => {
         <Button
           type="primary"
           style={{ background: "#1a1a1a", borderColor: "#1fe879" }}
+          className="custom-button"
           icon={<PlusOutlined />}
           onClick={showModal}
         >

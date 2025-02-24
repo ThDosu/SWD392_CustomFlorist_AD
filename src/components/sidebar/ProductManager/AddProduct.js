@@ -247,6 +247,7 @@ const AddProduct = () => {
             htmlType="submit"
             size="large"
             block
+            className="custom-button"
             style={{ background: "#000000", borderColor: "#1fe879" }}
           >
             Thêm vào danh sách

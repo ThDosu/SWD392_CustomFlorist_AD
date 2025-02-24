@@ -62,7 +62,7 @@ const Header = ({ username, avatarUrl }) => {
 
           <img src={Logo} width="30" height="30" className="d-inline-block align-top" alt="BloomGift logo" />
 
-          <span className="ml-2">BloomGift</span>
+          <span className="ml-2">Your Florist</span>
         </Navbar.Brand>
         {/* End */}
         <div className="d-flex align-items-center">

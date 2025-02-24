@@ -42,7 +42,7 @@ const SalerSidebar = ({ children }) => {
             onClick={handleToggle}
             className="mb-4 w-full"
           >
-            {collapsed ? "≡" : "BloomGift"}
+            {collapsed ? "≡" : "Your Florist"}
           </Button>
           {/* Các item navigate */}
           <Menu iconShape="circle" menuItemStyles={menuItemStyles}>

@@ -4,7 +4,7 @@ import { useToasts } from "react-toast-notifications";
 import Swal from "sweetalert2";
 import { fetchSellerInfo, updateSellerInfo } from "../../../redux/actions/storeActions";
 import "./StoreProfile.css";
-
+import Logo from "../../../assets/fonts/Logo.jpeg";
 const StoreProfile = () => {
   const dispatch = useDispatch();
   const sellerInfo = useSelector((state) => state.seller.sellerInfo);
@@ -93,7 +93,7 @@ const StoreProfile = () => {
                   onChange={(e) => handleInputChange("storeName", e.target.value)}
                 />
               ) : (
-                <span>{sellerInfo?.storeName || "0967630810phuc"}</span>
+                <span>{sellerInfo?.storeName || "thanhse171585@fpt.edu,vn"}</span>
               )}
             </div>
             <div className="info-row">
@@ -104,20 +104,14 @@ const StoreProfile = () => {
                     type="file"
                     onChange={handleFileChange} // Handle file upload
                   />
-                  {storeAvatar && (
-                    <img
-                      src={URL.createObjectURL(storeAvatar)}
-                      alt="Preview"
-                      width="100"
-                      height="100"
-                      className="rounded-circle"
-                    />
-                  )}
+                  {storeAvatar && <img src={Logo} alt="Preview" width="100" height="100" className="rounded-circle" />}
                 </>
               ) : sellerInfo?.storeAvatar ? (
                 <img src={sellerInfo.storeAvatar} alt="Shop Logo" width="100" height="100" className="rounded-circle" />
               ) : (
-                <div className="default-logo">P</div>
+                // Hồ sơ Shop (logo)
+                // <div className="default-logo">P</div>
+                <img src={Logo} alt="Preview" width="100" height="100" className="rounded-circle" />
               )}
             </div>
             <div className="info-row">
