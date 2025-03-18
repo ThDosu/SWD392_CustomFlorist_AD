@@ -14,19 +14,20 @@ import "./assets/scss/style.scss";
 import * as serviceWorker from "./serviceWorker";
 
 import { composeWithDevTools } from "redux-devtools-extension";
+import { QueryClient, QueryClientProvider } from "react-query";
 
-const store = createStore(
-  rootReducer,
-  load(),
-  composeWithDevTools(applyMiddleware(thunk, save()))
-);
+const store = createStore(rootReducer, load(), composeWithDevTools(applyMiddleware(thunk, save())));
+
+const queryClient = new QueryClient(); // ⚡️ Tạo instance của QueryClient
 
 // fetch products from json file
 store.dispatch(fetchProducts(products));
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   </Provider>,
   document.getElementById("root")
 );

@@ -24,9 +24,10 @@ const ProductList = () => {
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
 
+  const [page, setPage] = useState(0); // State để lưu số trang hiện tại
+
   useEffect(() => {
-    const storeID = localStorage.getItem("storeID");
-    dispatch(getProductsByStoreIDBySeller(storeID));
+    dispatch(getProductsByStoreIDBySeller(page));
   }, [dispatch]);
 
   const handleTabChange = (key) => {
@@ -185,7 +186,14 @@ const ProductList = () => {
             dataSource={filteredProducts}
             rowKey="productID"
             locale={customLocale}
-            pagination={{ pageSize: 10 }}
+            pagination={{
+              pageSize: 10,
+              current: page + 1, // Chuyển đổi từ index 0 thành index 1 của Ant Design
+              onChange: (pageNumber) => {
+                setPage(pageNumber - 1); // Giữ state theo index 0
+                dispatch(getProductsByStoreIDBySeller(pageNumber - 1)); // Gọi API với trang mới
+              },
+            }}
           />
         </TabPane>
         <TabPane tab="Đang Hoạt Động" key="active">

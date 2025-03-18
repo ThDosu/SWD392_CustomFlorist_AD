@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode";
+import React, { useEffect, useState } from "react";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
+import { Path } from "../../constants/path";
 import { loginAccount } from "../../redux/actions/authenticationActions";
-import { fetchSellerInfo } from "../../redux/actions/storeActions";
+import { roles } from "../../types/roles";
 import "./LoginRegister.css";
-
 const Login = () => {
+  // eslint-disable-next-line no-undef
+  const [redirect, setRedirect] = useState(false);
   const dispatch = useDispatch();
   const { addToast } = useToasts();
   const [rememberMe, setRememberMe] = useState(false);
@@ -40,32 +42,20 @@ const Login = () => {
 
     dispatch(loginAccount(userData, addToast))
       .then((response) => {
-        if (rememberMe) {
-          document.cookie = `userEmail=${userData.email}; max-age=31536000; path=/`; // Save for 1 year
-          document.cookie = `userPassword=${userData.password}; max-age=31536000; path=/`; // Save for 1 year
-        }
-        if (response && response.token) {
-          const decodedToken = jwtDecode(response.token);
-          localStorage.setItem("token", response.token);
-          localStorage.setItem("role", decodedToken.role);
-          localStorage.setItem("storeID", decodedToken.storeID);
+        console.log("res.data", response);
 
-          if (decodedToken.role === "ROLE_SELLER") {
-            dispatch(fetchSellerInfo(decodedToken.storeID))
-              .then((storeData) => {
-                console.log("Store data fetch thành công", storeData);
-              })
-              .catch((error) => {
-                console.error("Lỗi fetching store data:", error);
-              });
-            history.push("/banhang/shop-profile");
-          }
+        if (response) {
+          setRedirect((prev) => !prev);
         }
       })
       .catch((error) => {
         console.error("Login error:", error);
       });
   };
+
+  if (redirect) {
+    return <Redirect to={Path.banhang} />;
+  }
 
   return (
     <div
