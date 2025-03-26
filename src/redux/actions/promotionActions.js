@@ -1,5 +1,6 @@
 import { Content } from "antd/es/layout/layout";
 import axios from "axios";
+import config from "../../constants/config";
 
 export const GET_ALL_PROMOTIONS = "GET_ALL_PROMOTIONS";
 export const GET_PROMOTION_BY_ID = "GET_PROMOTION_BY_ID";
@@ -12,7 +13,7 @@ export const SET_PROMOTION_ERROR = "SET_PROMOTION_ERROR";
 export const getAllPromotions = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get("http://localhost:8080/custom-florist/api/v1/promotions", {
+      const response = await axios.get(`${config.baseUrl}promotions`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -77,7 +78,7 @@ export const getPromotionByStatus = (promotionStatus) => {
 export const getPromotionById = (promotionID) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`http://localhost:8080/custom-florist/api/v1/promotions/${promotionID}`, {
+      const response = await axios.get(`${config.baseUrl}promotions/${promotionID}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -100,7 +101,9 @@ export const getPromotionById = (promotionID) => {
 export const createPromotion = (promotionInfo) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post(`http://localhost:8080/custom-florist/api/v1/promotions`, promotionInfo, {
+      console.log("promotionInfoCreate", promotionInfo);
+
+      const response = await axios.post(`${config.baseUrl}promotions`, promotionInfo, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -125,16 +128,12 @@ export const updatePromotion = (promotionID, promotionInfo) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.put(
-        `http://localhost:8080/custom-florist/api/v1/promotions/${promotionID}`,
-        promotionInfo,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json",
-          },
-        }
-      );
+      const response = await axios.put(`${config.baseUrl}promotions/${promotionID}`, promotionInfo, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json",
+        },
+      });
       if (response.status !== 200) {
         throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
       }
@@ -156,7 +155,7 @@ export const deletePromotion = (promotionID) => {
 
   return async (dispatch) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/custom-florist/api/v1/promotions/${promotionID}`, {
+      const response = await axios.delete(`${config.baseUrl}promotions/${promotionID}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

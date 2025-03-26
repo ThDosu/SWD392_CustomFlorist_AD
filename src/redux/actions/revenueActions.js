@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "../../constants/config";
 
 export const GET_REVENUES_COUNT_BY_STORE = "GET_REVENUES_COUNT_BY_STORE";
 export const GET_PLACED_ORDERS_COUNT = "GET_PLACED_ORDERS_COUNT";
@@ -78,7 +79,7 @@ export const fetchReceivedRevenueByStore = () => {
       if (!token) {
         throw new Error("No token found");
       }
-      const response = await axios.get(`http://localhost:8080/custom-florist/api/v1/statistic/monthly-statistics`, {
+      const response = await axios.get(`${config.baseUrl}statistic/monthly-statistics`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

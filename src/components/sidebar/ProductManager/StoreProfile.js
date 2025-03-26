@@ -294,7 +294,7 @@ const StoreProfile = () => {
         ))} */}
       </div>
       <div className="tab-content">{renderTabContent()}</div>
-      <div className="action-buttons">
+      {/* <div className="action-buttons">
         {isEditing ? (
           <>
             <button className="save" onClick={handleSave}>
@@ -312,7 +312,7 @@ const StoreProfile = () => {
             </button>
           </>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

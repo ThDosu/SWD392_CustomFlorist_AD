@@ -184,7 +184,7 @@ const PromotionList = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Khuyến mãi</h1>
+      <h1>Quản lý khuyến mãi</h1>
       <div style={{ display: "flex", justifyContent: "end", marginBottom: "20px" }}>
         {/* <Select
           defaultValue=""

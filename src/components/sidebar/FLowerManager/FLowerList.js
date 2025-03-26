@@ -121,7 +121,7 @@ const FlowerList = () => {
       title: "Mã hoa",
       dataIndex: "flowerId",
       key: "flowerId",
-      align: "center",
+
       render: (text, record) => (
         <div style={{ display: "flex", alignItems: "center" }}>
           <span>{text}</span>
@@ -184,9 +184,9 @@ const FlowerList = () => {
           <Button type="link" onClick={() => handleUpdateClick(record.flowerId)} icon={<EditOutlined />}>
             Chỉnh sửa
           </Button>
-          <Button type="link" danger onClick={() => handleDeleteClick(record.productID)} icon={<DeleteOutlined />}>
+          {/* <Button type="link" danger onClick={() => handleDeleteClick(record.productID)} icon={<DeleteOutlined />}>
             Xóa
-          </Button>
+          </Button> */}
         </>
       ),
     },
@@ -229,7 +229,7 @@ const FlowerList = () => {
         </NavLink>
       </div>
       <Input
-        placeholder="Tìm tên sản phẩm"
+        placeholder="Tìm tên hoa"
         onChange={(e) => setSearchTerm(e.target.value)}
         style={{ marginBottom: "20px", borderColor: "#aaf6cc" }}
         suffix={<SearchOutlined style={{ fontSize: "18px", color: "#aaf6cc" }} />}

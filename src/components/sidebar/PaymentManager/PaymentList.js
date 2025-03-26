@@ -59,22 +59,23 @@ const PaymentList = () => {
   };
 
   const columns = [
-    {
-      title: "Mã đơn hàng",
-      dataIndex: "order_id",
-      key: "order_id",
-      sorter: (a, b) => a.orderID - b.orderID,
-      render: (orderID) => (
-        <Button type="link" onClick={() => showOrderDetails(orderID)}>
-          {orderID}
-        </Button>
-      ),
-    },
+    // {
+    //   title: "Mã đơn hàng",
+    //   dataIndex: "order_id",
+    //   key: "order_id",
+    //   sorter: (a, b) => a.orderID - b.orderID,
+    //   render: (orderID) => (
+    //     <Button type="link" onClick={() => showOrderDetails(orderID)}>
+    //       {orderID}
+    //     </Button>
+    //   ),
+    // },
 
     {
       title: "Mã thanh toán",
       dataIndex: "transactionCode",
       key: "transactionCode",
+      align: "center",
       render: (text) => text,
     },
 
@@ -87,6 +88,7 @@ const PaymentList = () => {
       title: "Phương thức thanh toán",
       dataIndex: "paymentMethod",
       key: "paymentMethod",
+      align: "center",
     },
     // {
     //   title: "Ngân hàng",
@@ -178,12 +180,12 @@ const PaymentList = () => {
         });
       },
     },
-    {
-      title: "Ghi chú GD",
-      dataIndex: "note",
-      key: "note",
-      render: (note) => note || "Không có ghi chú",
-    },
+    // {
+    //   title: "Ghi chú GD",
+    //   dataIndex: "note",
+    //   key: "note",
+    //   render: (note) => note || "Không có ghi chú",
+    // },
   ];
 
   const filteredPayments = payments.filter((payment) => {

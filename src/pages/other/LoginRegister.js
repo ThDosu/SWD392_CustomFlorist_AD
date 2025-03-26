@@ -6,7 +6,7 @@ import {
   signInWithGoogle,
 } from "../../redux/actions/authenticationActions";
 import PropTypes from "prop-types";
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import React, { Fragment, useState, useEffect } from "react";
 import MetaTags from "react-meta-tags";
 import { Link, useHistory } from "react-router-dom";
@@ -56,7 +56,7 @@ const LoginRegister = ({ location }) => {
     const getCookie = (name) => {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
+      if (parts.length === 2) return parts.pop().split(";").shift();
     };
 
     const savedEmail = getCookie("userEmail");
@@ -229,7 +229,10 @@ const LoginRegister = ({ location }) => {
                                     <span>Đăng Nhập</span>
                                   </button>
                                   <button
-                                    onClick={() => window.location.href = 'https://bloomgift.lemonhill-6b585cc3.eastasia.azurecontainerapps.io/oauth2/authorization/google'}
+                                    onClick={() =>
+                                      (window.location.href =
+                                        "https://bloomgift.lemonhill-6b585cc3.eastasia.azurecontainerapps.io/oauth2/authorization/google")
+                                    }
                                     className="ml-5"
                                   >
                                     Đăng nhập với Google
@@ -243,10 +246,7 @@ const LoginRegister = ({ location }) => {
                                 setShowResetPasswordForm={setShowResetPasswordForm}
                               />
                             ) : (
-                              <ResetPasswordForm
-                                email={email}
-                                setShowResetPasswordForm={setShowResetPasswordForm}
-                              />
+                              <ResetPasswordForm email={email} setShowResetPasswordForm={setShowResetPasswordForm} />
                             )}
                           </div>
                         </div>
@@ -307,9 +307,7 @@ const LoginRegister = ({ location }) => {
                             )}
                             {showRegenerateButton && registrationSuccess && (
                               <div className="regenerate-otp-container mt-3">
-                                <p>
-                                  Bạn chưa nhận được mã OTP? Nhấn vào nút bên dưới để gửi lại.
-                                </p>
+                                <p>Bạn chưa nhận được mã OTP? Nhấn vào nút bên dưới để gửi lại.</p>
                                 <Button variant="warning" onClick={handleRegenerateOTP}>
                                   Gửi lại OTP
                                 </Button>

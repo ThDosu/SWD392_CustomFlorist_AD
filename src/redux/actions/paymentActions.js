@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "../../constants/config";
 
 export const GET_PAYMENT_BY_STORE = "GET_PAYMENT_BY_STORE";
 
@@ -9,14 +10,11 @@ export const fetchAllPayment = () => {
       if (!token) {
         throw new Error("No token found");
       }
-      const response = await axios.get(
-        `http://localhost:8080/custom-florist/api/v1/payment?page=0&size=50&direction=ASC`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${config.baseUrl}payment?page=0&size=50&direction=ASC`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.status !== 200) {
         throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
       }

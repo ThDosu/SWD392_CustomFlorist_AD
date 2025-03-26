@@ -72,7 +72,11 @@ const Login = () => {
       }}
     >
       <Container fluid>
-        <Row className="justify-content-end row">
+        <Row className="justify-content-center">
+          <Col lg={4} md={6} className="text-center d-flex align-items-center justify-content-center">
+            <img src={Logo} alt="Logo" style={{ width: "60%", maxWidth: "300px" }} />
+          </Col>
+
           <Col lg={4} md={6} className="px-5" style={{ marginRight: "160px" }}>
             <div className="bg-white p-4 rounded shadow-lg">
               <h2 className="text-center mb-4" style={{ color: "#7bf2b1" }}>
@@ -96,9 +100,9 @@ const Login = () => {
                       className="text-muted"
                     />
                   </div>
-                  <Link to="/forget-password" style={{ color: "#7bf2b1", textDecoration: "none" }}>
+                  {/* <Link to="/forget-password" style={{ color: "#7bf2b1", textDecoration: "none" }}>
                     Quên mật khẩu?
-                  </Link>
+                  </Link> */}
                 </div>
                 <Button
                   type="submit"

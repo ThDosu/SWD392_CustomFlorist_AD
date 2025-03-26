@@ -83,12 +83,12 @@ const Header = ({ username, avatarUrl }) => {
             onMouseLeave={() => setShowDropdown(false)}
             align="end"
           >
-            <Dropdown.Item href="shop-profile" className="d-flex align-items-center">
+            {/* <Dropdown.Item href="shop-profile" className="d-flex align-items-center">
               <PersonCircle className="mr-2" /> Hồ Sơ Shop
             </Dropdown.Item>
             <Dropdown.Item href="#settings" className="d-flex align-items-center">
               <Gear className="mr-2" /> Thiết Lập Shop
-            </Dropdown.Item>
+            </Dropdown.Item> */}
             <Dropdown.Divider />
             <Dropdown.Item href="#logout" className="d-flex align-items-center text-danger" onClick={handleLogout}>
               <BoxArrowRight className="mr-2" /> Đăng xuất

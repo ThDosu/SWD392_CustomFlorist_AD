@@ -16,12 +16,10 @@ export const floweriestApi = {
       return Promise.reject(error);
     }
   },
-  addFlower: async ({ name, flowerType, color, price, image,isActive }: Flower): Promise<Flower> => {
-    const newFlower = { name, flowerType, color, price, image ,isActive };
+  addFlower: async ({ name, flowerType, color, price, image, isActive }: Flower): Promise<Flower> => {
+    const newFlower = { name, flowerType, color, price, image, isActive };
 
-console.log("newFlower",newFlower);
-
-
+    console.log("newFlower", newFlower);
 
     try {
       const response = await http.post(`flowers`, newFlower);

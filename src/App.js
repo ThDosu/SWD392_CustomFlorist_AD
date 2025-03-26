@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { ToastProvider } from "react-toast-notifications";
 import { loadLanguages, multilanguage } from "redux-multilanguage";
-import ForgetPasswordForm from "./components/form/forgetPassword";
+
 import ResetPasswordForm from "./components/form/resetPassword";
 import Dashboard from "./components/sidebar/DashBoard";
 import DistanseFeeList from "./components/sidebar/DistanceFee/DistanseFeeList";
@@ -23,6 +23,7 @@ import SignInWithGoogle from "./pages/other/SignInWithGoogle";
 import UserList from "./components/sidebar/UserManager/UserList";
 import FlowerList from "./components/sidebar/FLowerManager/FLowerList";
 import AddFlower from "./components/sidebar/FLowerManager/AddFlower";
+import ForgetPasswordForm from "./components/form/forgetPassword";
 
 // // home pages
 // const HomeFashion = lazy(() => import("./pages/home/HomeFashion"));
@@ -157,7 +158,7 @@ const App = (props) => {
             >
               <Switch>
                 <Route path={publicUrl + "/login"} component={LoginPage} />
-                <Route path={publicUrl + "/forget-password"} component={ForgetPasswordForm} />
+                <Route path={"/forget-password"} component={ForgetPasswordForm} />
                 <Route path={publicUrl + "/reset-password"} component={ResetPasswordForm} />
                 <Route path={publicUrl + "/signInWithGoogle"} component={SignInWithGoogle} />
                 <Route path={publicUrl + "/not-found"} component={NotFound} />

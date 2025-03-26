@@ -1,6 +1,7 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { roles } from "../../types/roles";
+import config from "../../constants/config";
 
 export const REGISTER = "REGISTER";
 export const LOGIN = "LOGIN";
@@ -124,9 +125,7 @@ export const verifyAccount = (userData, addToast) => {
 export const forgotPassword = (email, addToast) => {
   return async (dispatch) => {
     try {
-      const url = `https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/auth/forget-password?email=${encodeURIComponent(
-        email
-      )}`;
+      const url = `${config.baseUrl}user/reset-password/request?email=${encodeURIComponent(email)}`;
       console.log("Forgot Password URL:", url);
 
       const response = await axios.post(url);
@@ -136,7 +135,11 @@ export const forgotPassword = (email, addToast) => {
         payload: response.data,
       });
 
-      if (addToast) addToast("Yêu cầu đặt lại mật khẩu đã được gửi!", { appearance: "success", autoDismiss: true });
+      if (addToast)
+        addToast("Yêu cầu đặt lại mật khẩu đã được gửi, kiểm tra email của bạn", {
+          appearance: "success",
+          autoDismiss: true,
+        });
     } catch (error) {
       console.error("Forgot password request failed:", error);
       if (addToast) addToast("Yêu cầu đặt lại mật khẩu thất bại.", { appearance: "error", autoDismiss: true });

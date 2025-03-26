@@ -9,14 +9,13 @@ const AddPromotion = () => {
 
   const onFinish = (values) => {
     const promotionRequest = {
-      code: values.promotionName,
       id: values.promotionCode,
-      active: true,
-
+      code: values.promotionName,
       discountPercentage: values.promotionDiscount,
-      bouquetId: values.bouquetId,
       validFrom: moment(values.startDate).format("YYYY-MM-DD"),
       validTo: moment(values.endDate).format("YYYY-MM-DD"),
+      bouquetId: values.bouquetId,
+      active: true,
     };
 
     console.log("promotionRequest", promotionRequest);

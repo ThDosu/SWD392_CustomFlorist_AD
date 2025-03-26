@@ -289,7 +289,7 @@ const ProductList = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Sản phẩm</h1>
+      <h1>Quản lý sản phẩm</h1>
       <div style={{ display: "flex", justifyContent: "end", marginBottom: "20px" }}>
         {/* <Select
           defaultValue=""
