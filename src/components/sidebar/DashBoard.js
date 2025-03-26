@@ -42,18 +42,60 @@ const Dashboard = () => {
   const storeID = localStorage.getItem("storeID");
 
   // Fetch tổng doanh thu
+  // useEffect(() => {
+  //   const fetchRevenue = async () => {
+  //     if (!storeID) return;
+
+  //     setLoading((prev) => ({ ...prev, revenue: true }));
+  //     try {
+  //       const data = await dispatch(fetchReceivedRevenueByStore(storeID));
+  //       setReceivedRevenue(data);
+  //       setError((prev) => ({ ...prev, revenue: null }));
+  //     } catch (err) {
+  //       console.error("Error fetching revenue:", err);
+  //       setReceivedRevenue(0);
+  //       setError((prev) => ({ ...prev, revenue: err.message }));
+  //     } finally {
+  //       setLoading((prev) => ({ ...prev, revenue: false }));
+  //     }
+  //   };
+
+  //   fetchRevenue();
+  // }, [dispatch, storeID]);
+
   useEffect(() => {
     const fetchRevenue = async () => {
-      if (!storeID) return;
-
+      let totalRevenue = 0;
       setLoading((prev) => ({ ...prev, revenue: true }));
       try {
-        const data = await dispatch(fetchReceivedRevenueByStore(storeID));
-        setReceivedRevenue(data);
+        const data = await dispatch(fetchReceivedRevenueByStore());
+        if (data && data.productStatistics) {
+          const totalCount = Object.values(data.productStatistics).reduce((sum, value) => sum + value, 0);
+          setTotalProducts(totalCount);
+        }
+
+        if (data && data.monthlyStatistics) {
+          const formattedData = data.monthlyStatistics.map((item) => {
+            // Tính tổng số đơn hàng từ orderCountsByStatus
+            const totalOrders = Object.values(item.orderCountsByStatus || {}).reduce((sum, count) => sum + count, 0);
+            setPlacedOrdersCount(totalOrders);
+            console.log("item", item.totalPaymentRevenue);
+
+            totalRevenue += item.totalPaymentRevenue;
+            return {
+              month: `${item.month}/${item.year}`, // Định dạng tháng/năm
+              totalRevenue: item.totalPaymentRevenue, // Tổng doanh thu
+              totalOrders, // Tổng số đơn hàng
+            };
+          });
+          setReceivedRevenue(totalRevenue);
+          setChartData(formattedData);
+        }
+
         setError((prev) => ({ ...prev, revenue: null }));
       } catch (err) {
         console.error("Error fetching revenue:", err);
-        setReceivedRevenue(0);
+
         setError((prev) => ({ ...prev, revenue: err.message }));
       } finally {
         setLoading((prev) => ({ ...prev, revenue: false }));
@@ -61,92 +103,92 @@ const Dashboard = () => {
     };
 
     fetchRevenue();
-  }, [dispatch, storeID]);
+  }, [dispatch]);
 
   // Fetch tổng số đơn hàng
-  useEffect(() => {
-    const fetchOrders = async () => {
-      if (!storeID) return;
+  // useEffect(() => {
+  //   const fetchOrders = async () => {
+  //     if (!storeID) return;
 
-      setLoading((prev) => ({ ...prev, orders: true }));
-      try {
-        const data = await dispatch(fetchPlacedOrdersCount(storeID));
-        setPlacedOrdersCount(data);
-        setError((prev) => ({ ...prev, orders: null }));
-      } catch (err) {
-        console.error("Error fetching orders:", err);
-        setPlacedOrdersCount(0);
-        setError((prev) => ({ ...prev, orders: err.message }));
-      } finally {
-        setLoading((prev) => ({ ...prev, orders: false }));
-      }
-    };
+  //     setLoading((prev) => ({ ...prev, orders: true }));
+  //     try {
+  //       const data = await dispatch(fetchPlacedOrdersCount(storeID));
+  //       setPlacedOrdersCount(2222);
+  //       setError((prev) => ({ ...prev, orders: null }));
+  //     } catch (err) {
+  //       console.error("Error fetching orders:", err);
+  //       setPlacedOrdersCount(0);
+  //       setError((prev) => ({ ...prev, orders: err.message }));
+  //     } finally {
+  //       setLoading((prev) => ({ ...prev, orders: false }));
+  //     }
+  //   };
 
-    fetchOrders();
-  }, [dispatch, storeID]);
+  //   fetchOrders();
+  // }, [dispatch, storeID]);
 
   // Fetch tổng số sản phẩm
-  useEffect(() => {
-    const fetchProducts = async () => {
-      if (!storeID) return;
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     if (!storeID) return;
 
-      setLoading((prev) => ({ ...prev, products: true }));
-      try {
-        const data = await dispatch(fetchTotalProductsByStore(storeID));
-        setTotalProducts(data);
-        setError((prev) => ({ ...prev, products: null }));
-      } catch (err) {
-        console.error("Error fetching products:", err);
-        setTotalProducts(0);
-        setError((prev) => ({ ...prev, products: err.message }));
-      } finally {
-        setLoading((prev) => ({ ...prev, products: false }));
-      }
-    };
+  //     setLoading((prev) => ({ ...prev, products: true }));
+  //     try {
+  //       const data = await dispatch(fetchTotalProductsByStore(storeID));
+  //       setTotalProducts(data);
+  //       setError((prev) => ({ ...prev, products: null }));
+  //     } catch (err) {
+  //       console.error("Error fetching products:", err);
+  //       setTotalProducts(0);
+  //       setError((prev) => ({ ...prev, products: err.message }));
+  //     } finally {
+  //       setLoading((prev) => ({ ...prev, products: false }));
+  //     }
+  //   };
 
-    fetchProducts();
-  }, [dispatch, storeID]);
+  //   fetchProducts();
+  // }, [dispatch, storeID]);
 
   // Fetch dữ liệu biểu đồ
-  useEffect(() => {
-    const fetchChartData = async () => {
-      if (!storeID) return;
+  // useEffect(() => {
+  //   const fetchChartData = async () => {
+  //     if (!storeID) return;
 
-      const months = [8, 9, 10, 11, 12];
-      const year = new Date().getFullYear();
-      const dataPromises = months.map(async (month) => {
-        const { startDate, endDate } = getDateTime(month, year);
+  //     const months = [8, 9, 10, 11, 12];
+  //     const year = new Date().getFullYear();
+  //     const dataPromises = months.map(async (month) => {
+  //       const { startDate, endDate } = getDateTime(month, year);
 
-        try {
-          const [products, orders, payments] = await Promise.all([
-            dispatch(fetchTotalProductByStoreInTime(storeID, startDate, endDate)),
-            dispatch(fetchTotalOrdersByStoreInTime(storeID, startDate, endDate)),
-            dispatch(fetchTotalPaymentByStoreInTime(storeID, startDate, endDate)),
-          ]);
+  //       try {
+  //         const [products, orders, payments] = await Promise.all([
+  //           dispatch(fetchTotalProductByStoreInTime(storeID, startDate, endDate)),
+  //           dispatch(fetchTotalOrdersByStoreInTime(storeID, startDate, endDate)),
+  //           dispatch(fetchTotalPaymentByStoreInTime(storeID, startDate, endDate)),
+  //         ]);
 
-          return {
-            month: `Tháng ${month}`,
-            stores: products,
-            accounts: orders,
-            revenue: payments,
-          };
-        } catch (error) {
-          console.error(`Error fetching data for month ${month}:`, error);
-          return {
-            month: `Tháng ${month}`,
-            stores: 0,
-            accounts: 0,
-            revenue: 0,
-          };
-        }
-      });
+  //         return {
+  //           month: `Tháng ${month}`,
+  //           stores: products,
+  //           accounts: orders,
+  //           revenue: payments,
+  //         };
+  //       } catch (error) {
+  //         console.error(`Error fetching data for month ${month}:`, error);
+  //         return {
+  //           month: `Tháng ${month}`,
+  //           stores: 0,
+  //           accounts: 0,
+  //           revenue: 0,
+  //         };
+  //       }
+  //     });
 
-      const chartData = await Promise.all(dataPromises);
-      setChartData(chartData);
-    };
+  //     const chartData = await Promise.all(dataPromises);
+  //     setChartData(chartData);
+  //   };
 
-    fetchChartData();
-  }, [dispatch, storeID]);
+  //   fetchChartData();
+  // }, [dispatch, storeID]);
 
   const cardStyle = {
     borderRadius: "8px",
@@ -239,9 +281,9 @@ const Dashboard = () => {
               <YAxis yAxisId="right" orientation="right" />
               <Tooltip />
               <Legend />
-              <Bar yAxisId="left" dataKey="stores" name="Số sản phẩm" fill="#8884d8" />
-              <Bar yAxisId="left" dataKey="accounts" name="Số đơn hàng" fill="#82ca9d" />
-              <Bar yAxisId="right" dataKey="revenue" name="Số giao dịch" fill="#ffc658" />
+              {/* <Bar yAxisId="left" dataKey="stories " name="Số sản phẩm" fill="#8884d8" /> */}
+              <Bar yAxisId="left" dataKey="totalOrders" name="Số đơn hàng" fill="#82ca9d" />
+              <Bar yAxisId="right" dataKey="totalRevenue" name="Số giao dịch" fill="#ffc658" />
             </BarChart>
           </ResponsiveContainer>
         </div>

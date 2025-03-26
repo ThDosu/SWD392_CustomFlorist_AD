@@ -12,3 +12,15 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface UserRes {
+  id: number;
+  name: string;
+  address: string;
+  email: string;
+  phone: string;
+  loyaltyPoints: number;
+  accountStatus: string;
+  role: string;
+  gender: string;
+}

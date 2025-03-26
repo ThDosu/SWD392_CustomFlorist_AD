@@ -25,6 +25,16 @@ const StoreProfile = () => {
     }
   }, [sellerInfo]);
 
+  const getStoreStatusText = () => {
+    const currentHour = new Date().getHours();
+    return currentHour >= 8 && currentHour < 21 ? "Hoạt động" : "Không hoạt động";
+  };
+
+  const getStoreStatusColor = () => {
+    const currentHour = new Date().getHours();
+    return currentHour >= 8 && currentHour < 21 ? "green" : "red";
+  };
+
   const handleInputChange = (field, value) => {
     setEditedInfo({
       ...editedInfo,
@@ -93,7 +103,7 @@ const StoreProfile = () => {
                   onChange={(e) => handleInputChange("storeName", e.target.value)}
                 />
               ) : (
-                <span>{sellerInfo?.storeName || "thanhse171585@fpt.edu,vn"}</span>
+                <span>{sellerInfo?.storeName || "Your Florist"}</span>
               )}
             </div>
             <div className="info-row">
@@ -122,7 +132,7 @@ const StoreProfile = () => {
                   onChange={(e) => handleInputChange("storeDescription", e.target.value)}
                 />
               ) : (
-                <span>{sellerInfo?.storeDescription || ""}</span>
+                <span>{sellerInfo?.storeDescription || "Chuyên bán các loại hoa trong các sự kiện và các lễ"}</span>
               )}
             </div>
 
@@ -137,132 +147,132 @@ const StoreProfile = () => {
                   <option value="Inactive">Inactive</option>
                 </select>
               ) : (
-                <span>{sellerInfo?.storeStatus || ""}</span>
+                <span style={{ color: getStoreStatusColor() }}>{getStoreStatusText()}</span>
               )}
             </div>
           </div>
         );
-      case "Thông tin Thuế":
-        return (
-          <div className="tax-info">
-            <h2>Thông tin Thuế</h2>
-            <div className="info-row">
-              <span>Email:</span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editedInfo.email || ""}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                />
-              ) : (
-                <span>{sellerInfo?.email || "N/A"}</span>
-              )}
-            </div>
-            <div className="info-row">
-              <span>Địa chỉ:</span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editedInfo.storeAddress || ""}
-                  onChange={(e) => handleInputChange("storeAddress", e.target.value)}
-                />
-              ) : (
-                <span>{sellerInfo?.storeAddress || "N/A"}</span>
-              )}
-            </div>
-            <div className="info-row">
-              <span>Loại hình kinh doanh:</span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editedInfo.type || ""}
-                  onChange={(e) => handleInputChange("type", e.target.value)}
-                />
-              ) : (
-                <span>{sellerInfo?.type || "N/A"}</span>
-              )}
-            </div>
-            <div className="info-row">
-              <span>Mã số thuế:</span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editedInfo.taxNumber || ""}
-                  onChange={(e) => handleInputChange("taxNumber", e.target.value)}
-                />
-              ) : (
-                <span>{sellerInfo?.taxNumber || "N/A"}</span>
-              )}
-            </div>
-          </div>
-        );
-      case "Thông tin Khác":
-        return (
-          <div className="other-info">
-            <h2>Thông tin Định Danh</h2>
-            <div className="info-row">
-              <span>CCCD: </span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editedInfo.identityCard || ""}
-                  onChange={(e) => handleInputChange("identityCard", e.target.value)}
-                />
-              ) : (
-                <span>{sellerInfo?.identityCard || "N/A"}</span>
-              )}
-            </div>
-            <div className="info-row">
-              <span>Tên CCCD: </span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editedInfo.identityName || ""}
-                  onChange={(e) => handleInputChange("identityName", e.target.value)}
-                />
-              ) : (
-                <span>{sellerInfo?.identityName || "N/A"}</span>
-              )}
-            </div>
-            <h2>Thông tin Ngân Hàng</h2>
-            <div className="info-row">
-              <span>Tên ngân hàng: </span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editedInfo.bankAccountName || ""}
-                  onChange={(e) => handleInputChange("bankAccountName", e.target.value)}
-                />
-              ) : (
-                <span>{sellerInfo?.bankAccountName || "N/A"}</span>
-              )}
-            </div>
-            <div className="info-row">
-              <span>Số tài khoản: </span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editedInfo.bankNumber || ""}
-                  onChange={(e) => handleInputChange("bankNumber", e.target.value)}
-                />
-              ) : (
-                <span>{sellerInfo?.bankNumber || "N/A"}</span>
-              )}
-            </div>
-            <div className="info-row">
-              <span>Địa chỉ ngân hàng: </span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editedInfo.bankAddress || ""}
-                  onChange={(e) => handleInputChange("bankAddress", e.target.value)}
-                />
-              ) : (
-                <span>{sellerInfo?.bankAddress || "N/A"}</span>
-              )}
-            </div>
-          </div>
-        );
+      // case "Thông tin Thuế":
+      //   return (
+      //     <div className="tax-info">
+      //       <h2>Thông tin Thuế</h2>
+      //       <div className="info-row">
+      //         <span>Email:</span>
+      //         {isEditing ? (
+      //           <input
+      //             type="text"
+      //             value={editedInfo.email || ""}
+      //             onChange={(e) => handleInputChange("email", e.target.value)}
+      //           />
+      //         ) : (
+      //           <span>{sellerInfo?.email || "N/A"}</span>
+      //         )}
+      //       </div>
+      //       <div className="info-row">
+      //         <span>Địa chỉ:</span>
+      //         {isEditing ? (
+      //           <input
+      //             type="text"
+      //             value={editedInfo.storeAddress || ""}
+      //             onChange={(e) => handleInputChange("storeAddress", e.target.value)}
+      //           />
+      //         ) : (
+      //           <span>{sellerInfo?.storeAddress || "N/A"}</span>
+      //         )}
+      //       </div>
+      //       <div className="info-row">
+      //         <span>Loại hình kinh doanh:</span>
+      //         {isEditing ? (
+      //           <input
+      //             type="text"
+      //             value={editedInfo.type || ""}
+      //             onChange={(e) => handleInputChange("type", e.target.value)}
+      //           />
+      //         ) : (
+      //           <span>{sellerInfo?.type || "N/A"}</span>
+      //         )}
+      //       </div>
+      //       <div className="info-row">
+      //         <span>Mã số thuế:</span>
+      //         {isEditing ? (
+      //           <input
+      //             type="text"
+      //             value={editedInfo.taxNumber || ""}
+      //             onChange={(e) => handleInputChange("taxNumber", e.target.value)}
+      //           />
+      //         ) : (
+      //           <span>{sellerInfo?.taxNumber || "N/A"}</span>
+      //         )}
+      //       </div>
+      //     </div>
+      //   );
+      // case "Thông tin Khác":
+      //   return (
+      //     <div className="other-info">
+      //       <h2>Thông tin Định Danh</h2>
+      //       <div className="info-row">
+      //         <span>CCCD: </span>
+      //         {isEditing ? (
+      //           <input
+      //             type="text"
+      //             value={editedInfo.identityCard || ""}
+      //             onChange={(e) => handleInputChange("identityCard", e.target.value)}
+      //           />
+      //         ) : (
+      //           <span>{sellerInfo?.identityCard || "N/A"}</span>
+      //         )}
+      //       </div>
+      //       <div className="info-row">
+      //         <span>Tên CCCD: </span>
+      //         {isEditing ? (
+      //           <input
+      //             type="text"
+      //             value={editedInfo.identityName || ""}
+      //             onChange={(e) => handleInputChange("identityName", e.target.value)}
+      //           />
+      //         ) : (
+      //           <span>{sellerInfo?.identityName || "N/A"}</span>
+      //         )}
+      //       </div>
+      //       <h2>Thông tin Ngân Hàng</h2>
+      //       <div className="info-row">
+      //         <span>Tên ngân hàng: </span>
+      //         {isEditing ? (
+      //           <input
+      //             type="text"
+      //             value={editedInfo.bankAccountName || ""}
+      //             onChange={(e) => handleInputChange("bankAccountName", e.target.value)}
+      //           />
+      //         ) : (
+      //           <span>{sellerInfo?.bankAccountName || "N/A"}</span>
+      //         )}
+      //       </div>
+      //       <div className="info-row">
+      //         <span>Số tài khoản: </span>
+      //         {isEditing ? (
+      //           <input
+      //             type="text"
+      //             value={editedInfo.bankNumber || ""}
+      //             onChange={(e) => handleInputChange("bankNumber", e.target.value)}
+      //           />
+      //         ) : (
+      //           <span>{sellerInfo?.bankNumber || "N/A"}</span>
+      //         )}
+      //       </div>
+      //       <div className="info-row">
+      //         <span>Địa chỉ ngân hàng: </span>
+      //         {isEditing ? (
+      //           <input
+      //             type="text"
+      //             value={editedInfo.bankAddress || ""}
+      //             onChange={(e) => handleInputChange("bankAddress", e.target.value)}
+      //           />
+      //         ) : (
+      //           <span>{sellerInfo?.bankAddress || "N/A"}</span>
+      //         )}
+      //       </div>
+      //     </div>
+      //   );
       default:
         return null;
     }
@@ -271,11 +281,17 @@ const StoreProfile = () => {
   return (
     <div className="store-profile">
       <div className="tab-header">
-        {["Thông tin cơ bản", "Thông tin Thuế", "Thông tin Khác"].map((tab) => (
+        {["Thông tin cơ bản"].map((tab) => (
           <button key={tab} className={activeTab === tab ? "active" : ""} onClick={() => handleTabChange(tab)}>
             {tab}
           </button>
         ))}
+
+        {/* {["Thông tin cơ bản", "Thông tin Thuế", "Thông tin Khác"].map((tab) => (
+          <button key={tab} className={activeTab === tab ? "active" : ""} onClick={() => handleTabChange(tab)}>
+            {tab}
+          </button>
+        ))} */}
       </div>
       <div className="tab-content">{renderTabContent()}</div>
       <div className="action-buttons">

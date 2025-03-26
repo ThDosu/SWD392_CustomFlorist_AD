@@ -73,14 +73,11 @@ export const fetchOrderById = (orderID) => {
       if (!token) {
         throw new Error("No token found");
       }
-      const response = await axios.get(
-        `https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/seller/order/order-management/get-order-by-id/${orderID}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`http://localhost:8080/custom-florist/api/v1/orders/${orderID}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.status !== 200) {
         throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
       }

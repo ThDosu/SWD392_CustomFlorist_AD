@@ -5,12 +5,16 @@ import { useDispatch } from "react-redux";
 import { createProduct } from "../../../redux/actions/productActions";
 import { categoriesApi } from "../../../apis/categories/categoriesMutation";
 import { getAllPromotions } from "../../../redux/actions/promotionActions";
+import { floweriestApi } from "../../../apis/flowers/flowersMutation";
+import { uploadImage } from "../../../utils/firebaseString";
 
 const { Option } = Select;
 const { TextArea } = Input;
 const { Title } = Typography;
 
-const AddProduct = () => {
+const AddFlower = () => {
+  const [fileList, setFileList] = useState([]);
+  const [price, setPrice] = useState("");
   // const dispatch = useDispatch();
   // const [imageFiles, setImageFiles] = useState([]);
   // const [hasSizes, setHasSizes] = useState(false); // Trạng thái để theo dõi xem có kích thước nào được thêm hay không
@@ -23,6 +27,16 @@ const AddProduct = () => {
   //     message.error(`${info.file.name} upload failed`);
   //   }
   // };
+
+  const formatCurrency = (value) => {
+    const number = Number(value.replace(/\D/g, "")); // Loại bỏ ký tự không phải số
+    return number.toLocaleString("vi-VN"); // Format số theo tiền VND
+  };
+
+  const handleChange = (e) => {
+    const formattedValue = formatCurrency(e.target.value);
+    setPrice(formattedValue);
+  };
 
   const onFinish = async (values) => {
     try {
@@ -51,24 +65,31 @@ const AddProduct = () => {
       //   sizes: sizes,
       // };
 
-      const productRequest = {
-        name: values.productName,
-        description: values.description,
-      };
+      if (fileList.length > 0) {
+        const fileToUpload = fileList[0].originFileObj || fileList[0];
+        uploadImage(fileToUpload);
 
-      console.log("productRequest", productRequest);
+        const flowerRequest = {
+          name: values.name,
+          flowerType: values.flowerType,
+          color: values.color,
+          price: values.price,
+          image: (await uploadImage(fileToUpload)) || values.image,
+          isActive: true,
+        };
 
-      await categoriesApi
-        .addCategories(productRequest)
-        .then(() => {
-          message.success("Thêm sản phẩm thành công");
-        })
-        .catch((error) => {
-          message.error("Thêm sản phẩm thất bại: " + error.message);
-        });
+        await floweriestApi
+          .addFlower(flowerRequest)
+          .then(() => {
+            message.success("Thêm hoa thành công");
+          })
+          .catch((error) => {
+            message.error("Thêm hoahoa phẩm thất bại: " + error.message);
+          });
+      }
     } catch (error) {
-      console.error("❌ Thêm sản phẩm thất bại:", error);
-      message.error("Thêm sản phẩm thất bại: " + (error?.response?.data?.message || error.message));
+      console.error("❌ Thêm hoahoa thất bại:", error);
+      message.error("Thêm hoa thất bại: " + (error?.response?.data?.message || error.message));
     }
   };
 
@@ -78,7 +99,7 @@ const AddProduct = () => {
       style={{ maxWidth: 1600, margin: "0 auto", boxShadow: "0 4px 8px rgba(0,0,0,0.1)" }}
     >
       <Title level={2} style={{ textAlign: "center", marginBottom: 30, color: "#F56285" }}>
-        Thêm Sản Phẩm
+        Thêm Hoa
       </Title>
       <Form
         layout="vertical"
@@ -86,38 +107,53 @@ const AddProduct = () => {
         initialValues={{ featured: false, productStatus: true, discount: 0 }}
         className="add-product-form"
       >
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              name="productName"
-              label="Tên Sản Phẩm"
-              rules={[{ required: true, message: "Làm ơn nhập tên sản phẩm!" }]}
-            >
-              <Input placeholder="Enter product name" />
-            </Form.Item>
-          </Col>
-          {/* <Col span={12}>
-            <Form.Item
-              name="categoryName"
-              label="Loại Sản Phẩm"
-              rules={[{ required: true, message: "Làm ơn chọn loại sản phẩm!" }]}
-            >
-              <Select placeholder="Select category">
-                <Option value="hoa">Hoa</Option>
-                <Option value="quà">Quà</Option>
-              </Select>
-            </Form.Item>
-          </Col> */}
-        </Row>
-
         <Form.Item
-          name="description"
-          label="Mô Tả"
-          rules={[{ required: true, message: "Vui lòng nhập mô tả sản phẩm!" }]}
+          name="name"
+          label="Tên hoa"
+          rules={[{ required: true, message: "Vui lòng nhập tên hoa" }]}
+          style={{ marginBottom: "16px" }}
         >
-          <TextArea rows={4} placeholder="Nhập mô tả sản phẩm" />
+          <Input placeholder="Nhập tên hoa" />
         </Form.Item>
 
+        <Form.Item
+          name="color"
+          label="Màu hoa"
+          rules={[{ required: true, message: "Vui lòng nhập màu hoa" }]}
+          style={{ marginBottom: "16px" }}
+        >
+          <Input placeholder="Nhập màu hoa" />
+        </Form.Item>
+
+        <Form.Item
+          name="flowerType"
+          label="Loại"
+          rules={[{ required: true, message: "Vui lòng nhập loại" }]}
+          style={{ marginBottom: "16px" }}
+        >
+          <Input.TextArea rows={4} placeholder="Nhập loại của hoa" />
+        </Form.Item>
+
+        <Form.Item
+          name="price"
+          label="Giá tiền"
+          rules={[{ required: true, message: "Vui lòng nhập giá tiền" }]}
+          style={{ marginBottom: "16px" }}
+        >
+          <Input placeholder="Nhập giá tiền" value={price} onChange={handleChange} suffix="₫" />
+        </Form.Item>
+
+        <Form.Item name="image" label="Ảnh hoa" rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}>
+          <Upload
+            beforeUpload={() => false} // Không tự động tải lên
+            listType="picture"
+            maxCount={1}
+            fileList={fileList}
+            onChange={({ fileList }) => setFileList(fileList)}
+          >
+            <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+          </Upload>
+        </Form.Item>
         {/* <Row gutter={16}>
           <Col span={8}>
             <Form.Item
@@ -273,4 +309,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default AddFlower;

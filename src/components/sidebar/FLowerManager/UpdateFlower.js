@@ -16,7 +16,7 @@ import {
   Space,
   Select,
 } from "antd";
-import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import { PlusOutlined, MinusCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
 import {
   updateProduct,
@@ -27,51 +27,72 @@ import {
 } from "../../../redux/actions/productActions";
 import { categoriesApi } from "../../../apis/categories/categoriesMutation";
 import { useQuery } from "react-query";
+import { floweriestApi } from "../../../apis/flowers/flowersMutation";
+import { uploadImage } from "../../../utils/firebaseString";
 
-const UpdateProduct = ({ visible, onCancel, categoryId, refetch }) => {
+const UpdateFlower = ({ visible, onCancel, flowerId, refetch }) => {
   const [form] = Form.useForm();
+
   const dispatch = useDispatch();
   const [fileList, setFileList] = useState([]);
   const [deletedFileList, setDeletedFileList] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const { data: cateDetail } = useQuery({
-    queryKey: ["catergory", categoryId], // Giúp cache dữ liệu
-    queryFn: () => categoriesApi.getCategoriesById(categoryId), // ✅ Không cần async wrapper nữa
-    enabled: !!categoryId, // Chỉ gọi khi có selectedOrderID
+  const { data: flowerDetail } = useQuery({
+    queryKey: ["flower", flowerId], // Giúp cache dữ liệu
+    queryFn: () => floweriestApi.getFlowersById(flowerId), // ✅ Không cần async wrapper nữa
+    enabled: !!flowerId, // Chỉ gọi khi có selectedOrderID
     refetchOnWindowFocus: false,
   });
 
-  console.log("CateId", categoryId);
+  console.log("flowerId", flowerId);
 
-  console.log("cateDetail", cateDetail);
+  console.log("flowerDetail", flowerDetail);
+
+  // useEffect(() => {
+  //   if (flowerDetail) {
+  //     dispatch({
+  //       type: GET_PRODUCTS_BY_ID,
+
+  //       payload: flowerDetail, // Truyền dữ liệu vào Redux
+  //     });
+  //   }
+  // }, [flowerDetail, dispatch, flowerId]);
 
   useEffect(() => {
-    if (cateDetail) {
-      dispatch({
-        type: GET_PRODUCTS_BY_ID,
-
-        payload: cateDetail, // Truyền dữ liệu vào Redux
-      });
-    }
-  }, [cateDetail, dispatch, categoryId]);
-
-  useEffect(() => {
-    if (cateDetail) {
+    if (flowerDetail) {
       form.setFieldsValue({
-        nameCate: cateDetail.name,
-        description: cateDetail.description,
-        isActive: cateDetail.isActive,
+        name: flowerDetail.name,
+        flowerType: flowerDetail.flowerType,
+        color: flowerDetail.color,
+        price: flowerDetail.price,
+        image: flowerDetail.image,
+        isActive: flowerDetail.isActive,
       });
     }
-  }, [cateDetail, form]);
+  }, [flowerDetail, form]);
 
-  const handleUpdate = (values) => {
+  const handleUpdate = async (values) => {
+    let uploadedImageUrl = values.image; // Nếu không có ảnh mới, dùng ảnh cũ
+    if (fileList.length > 0) {
+      const fileToUpload = fileList[0].originFileObj || fileList[0];
+
+      try {
+        uploadedImageUrl = await uploadImage(fileToUpload); // Chờ tải ảnh xong
+
+        console.log("upodateÌmgaÌmga", uploadedImageUrl);
+      } catch (error) {
+        console.error("Lỗi tải ảnh lên:", error);
+      }
+    }
     const formData = {
-      id: categoryId,
-      name: String(values.nameCate).trim(), // Đảm bảo là chuỗi hợp lệ
-      description: String(values.description).trim(),
-      is_active: Boolean(values.isActive), // Chuyển đổi thành boolean
+      flowerId: flowerDetail.flowerId,
+      name: values.name,
+      flowerType: values.flowerType,
+      color: values.color,
+      price: values.price,
+      image: uploadedImageUrl,
+      isActive: Boolean(values.isActive),
     };
 
     Swal.fire({
@@ -125,10 +146,11 @@ const UpdateProduct = ({ visible, onCancel, categoryId, refetch }) => {
 
         // Gửi dữ liệu đi (ví dụ: API call)
 
-        categoriesApi
-          .updateCategories(formData)
+        floweriestApi
+          .updateFlower(formData)
           .then(() => {
             refetch();
+            setFileList([]);
             Swal.fire("Đã cập nhật!", "Sản phẩm đã được cập nhật thành công.", "success");
             message.success("Cập nhật sản phẩm thành công");
           })
@@ -140,10 +162,10 @@ const UpdateProduct = ({ visible, onCancel, categoryId, refetch }) => {
             setLoading(false); // Đảm bảo loading về false dù thành công hay thất bại
           });
 
-        dispatch({
-          type: UPDATE_PRODUCT_SUCCESS,
-          payload: "Product updated successfully",
-        });
+        // dispatch({
+        //   type: UPDATE_PRODUCT_SUCCESS,
+        //   payload: "Product updated successfully",
+        // });
       }
     });
   };
@@ -195,21 +217,50 @@ const UpdateProduct = ({ visible, onCancel, categoryId, refetch }) => {
               style={{ backgroundColor: "#f8f9fa", borderRadius: "10px" }}
             >
               <Form.Item
-                name="nameCate"
-                label="Tên sản phẩm"
-                rules={[{ required: true, message: "Vui lòng nhập tên sản phẩm" }]}
+                name="name"
+                label="Tên hoa"
+                rules={[{ required: true, message: "Vui lòng nhập tên hoa" }]}
                 style={{ marginBottom: "16px" }}
               >
-                <Input placeholder="Nhập tên sản phẩm" />
+                <Input placeholder="Nhập tên hoa" />
               </Form.Item>
 
               <Form.Item
-                name="description"
-                label="Mô tả"
-                rules={[{ required: true, message: "Vui lòng nhập mô tả" }]}
+                name="color"
+                label="Màu hoa"
+                rules={[{ required: true, message: "Vui lòng nhập màu hoa" }]}
                 style={{ marginBottom: "16px" }}
               >
-                <Input.TextArea rows={4} placeholder="Nhập mô tả sản phẩm" />
+                <Input placeholder="Nhập màu hoa" />
+              </Form.Item>
+
+              <Form.Item
+                name="flowerType"
+                label="Loại"
+                rules={[{ required: true, message: "Vui lòng nhập loại" }]}
+                style={{ marginBottom: "16px" }}
+              >
+                <Input.TextArea rows={4} placeholder="Nhập loại của hoa" />
+              </Form.Item>
+              <Form.Item
+                name="price"
+                label="Giá tiền"
+                rules={[{ required: true, message: "Vui lòng nhập giá tiền" }]}
+                style={{ marginBottom: "16px" }}
+              >
+                <Input placeholder="Nhập giá tiền" type="number" />
+              </Form.Item>
+
+              <Form.Item name="image" label="Ảnh hoa" rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}>
+                <Upload
+                  beforeUpload={() => false} // Không tự động tải lên
+                  listType="picture"
+                  maxCount={1}
+                  fileList={fileList}
+                  onChange={({ fileList }) => setFileList(fileList)}
+                >
+                  <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+                </Upload>
               </Form.Item>
 
               <Form.Item
@@ -347,4 +398,4 @@ const UpdateProduct = ({ visible, onCancel, categoryId, refetch }) => {
 
 // };
 
-export default UpdateProduct;
+export default UpdateFlower;

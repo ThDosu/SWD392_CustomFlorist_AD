@@ -13,22 +13,23 @@ import {
 } from "../../../redux/actions/productActions";
 import { Button, Input, Select, Table, Empty, Tabs, Spin, Space } from "antd";
 import { PlusOutlined, SearchOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import UpdateProduct from "./UpdateProduct";
+import UpdateProduct from "./UpdateFlower";
 import Swal from "sweetalert2";
-import "./ProductList.css";
+import "./FLowerList.css";
 import { useQuery } from "react-query";
 import { categoriesApi } from "../../../apis/categories/categoriesMutation";
 import { floweriestApi } from "../../../apis/flowers/flowersMutation";
+import UpdateFlower from "./UpdateFlower";
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 
-const ProductList = () => {
+const FlowerList = () => {
   const dispatch = useDispatch();
-  // const state = useSelector((state) => state);
-  // console.log("Redux State:", state);
+  const state = useSelector((state) => state);
+  console.log("Redux State:", state);
 
-  // const products = useSelector((state) => state.productData.selectedCategoryId) || [];
+  // const products = useSelector((state) => state.productData.catelories) || [];
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
@@ -40,15 +41,11 @@ const ProductList = () => {
   //   dispatch(getAllProducts());
   // }, [dispatch]);
 
-  const { data: cateData = [], refetch } = useQuery({
-    queryKey: ["caterories"], // Giúp cache dữ liệu
-    queryFn: () => categoriesApi.getAllCategories(), // ✅ Không cần async wrapper nữa
+  const { data: flowerData = [], refetch } = useQuery({
+    queryKey: ["flower"], // Giúp cache dữ liệu
+    queryFn: () => floweriestApi.getAllFlowers(), // ✅ Không cần async wrapper nữa
     refetchOnWindowFocus: false,
   });
-
-  const products = cateData;
-
-  console.log("cateData", cateData);
 
   // useEffect(() => {
   //   if (cateData) {
@@ -59,9 +56,18 @@ const ProductList = () => {
   //   }
   // }, [cateData, dispatch]);
 
-  console.log("products", products);
+  // console.log("products", products);
 
-  console.log("cateData", cateData);
+  console.log("cateData", flowerData);
+
+  // useEffect(() => {
+  //   if (cateData) {
+  //     dispatch({
+  //       type: GET_ALL_PRODUCTS,
+  //       payload: cateData, // Truyền dữ liệu vào Redux
+  //     });
+  //   }
+  // }, [dispatch]);
 
   const handleTabChange = (key) => {
     switch (key) {
@@ -110,58 +116,51 @@ const ProductList = () => {
     });
   };
 
-  const columns = [
+  const columnFlowers = [
     {
-      title: "Mã sản phẩm",
-      dataIndex: "categoryId",
-      key: "categoryId",
+      title: "Mã hoa",
+      dataIndex: "flowerId",
+      key: "flowerId",
       align: "center",
       render: (text, record) => (
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <span>{text}</span>
         </div>
       ),
     },
-
     {
       title: "Tên sản phẩm",
       dataIndex: "name",
       key: "name",
       align: "center",
       render: (text, record) => (
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
-          {/* <img
-            src={record.images[0]?.productImage}
-            alt={text}
-            style={{ width: "50px", height: "50px", marginRight: "10px" }}
-          /> */}
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img src={record.image} alt={text} style={{ width: "50px", height: "50px", marginRight: "10px" }} />
           <span>{text}</span>
         </div>
       ),
     },
-    // {
-    //   title: "Doanh số",
-    //   dataIndex: "sold",
-    //   key: "sold",
-    //   sorter: (a, b) => a.sold - b.sold,
-    // },
-    // {
-    //   title: "Giá",
-    //   dataIndex: "price",
-    //   key: "price",
-    //   render: (price) => (price != null ? `${price.toFixed(2)} VNĐ` : "N/A"),
-    //   sorter: (a, b) => a.price - b.price,
-    // },
+    {
+      title: "Loại",
+      dataIndex: "flowerType",
+      key: "flowerType",
+      render: (text) => <span>{text}</span>,
+    },
+    {
+      title: "Giá",
+      dataIndex: "price",
+      key: "price",
+      render: (price) =>
+        price != null ? new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price) : "N/A",
+    },
 
     {
-      title: "Mô tả",
-      key: "description",
-      dataIndex: "description",
-      width: 800,
+      title: "Màu sắc",
+      key: "color",
+      dataIndex: "color",
+
       align: "center",
-      render: (description) => (
-        <span>{description.length > 200 ? description.slice(0, 500) + "..." : description}</span>
-      ),
+      render: (text) => <span>{text}</span>,
     },
     {
       title: "Trạng thái hoạt động",
@@ -178,107 +177,27 @@ const ProductList = () => {
     {
       title: "Thao tác",
       key: "action",
-      width: 200,
+      width: 150,
       align: "center",
       render: (_, record) => (
-        <Space>
-          <Button type="link" onClick={() => handleUpdateClick(record.categoryId)} icon={<EditOutlined />}>
+        <>
+          <Button type="link" onClick={() => handleUpdateClick(record.flowerId)} icon={<EditOutlined />}>
             Chỉnh sửa
           </Button>
-          {/* <Button type="link" danger onClick={() => handleDeleteClick(record.categoryId)} icon={<DeleteOutlined />}>
+          <Button type="link" danger onClick={() => handleDeleteClick(record.productID)} icon={<DeleteOutlined />}>
             Xóa
-          </Button> */}
-        </Space>
+          </Button>
+        </>
       ),
     },
   ];
 
-  // const columnFlowers = [
-  //   {
-  //     title: "Mã hoa",
-  //     dataIndex: "flowerId",
-  //     key: "flowerId",
-  //     align: "center",
-  //     render: (text, record) => (
-  //       <div style={{ display: "flex", alignItems: "center" }}>
-  //         <span>{text}</span>
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     title: "Tên sản phẩm",
-  //     dataIndex: "name",
-  //     key: "name",
-  //     align: "center",
-  //     render: (text, record) => (
-  //       <div style={{ display: "flex", alignItems: "center" }}>
-  //         <img
-  //           src="https://dalat.flowers/album/1144_hong-do-nhung-30-canh.jpg"
-  //           alt={text}
-  //           style={{ width: "50px", height: "50px", marginRight: "10px" }}
-  //         />
-  //         <span>{text}</span>
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     title: "Loại",
-  //     dataIndex: "flowerType",
-  //     key: "flowerType",
-  //     render: (text) => <span>{text}</span>,
-  //   },
-  //   {
-  //     title: "Giá",
-  //     dataIndex: "price",
-  //     key: "price",
-  //     render: (price) =>
-  //       price != null ? new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price) : "N/A",
-  //   },
+  const filteredProducts = flowerData.filter((flower) => flower.name?.toLowerCase().includes(searchTerm.toLowerCase()));
 
-  //   {
-  //     title: "Màu sắc",
-  //     key: "color",
-  //     dataIndex: "color",
+  const activeflower = flowerData.filter((flower) => flower.isActive);
+  const inactiveflower = flowerData.filter((flower) => !flower.isActive);
 
-  //     align: "center",
-  //     render: (text) => <span>{text}</span>,
-  //   },
-  //   {
-  //     title: "Trạng thái hoạt động",
-  //     dataIndex: "isActive",
-  //     key: "isActive",
-  //     align: "center",
-  //     render: (isActive) =>
-  //       isActive ? (
-  //         <span style={{ color: "green", fontWeight: "bold" }}>Hoạt động</span>
-  //       ) : (
-  //         <span style={{ color: "red", fontWeight: "bold" }}>Không hoạt động</span>
-  //       ),
-  //   },
-  //   {
-  //     title: "Thao tác",
-  //     key: "action",
-  //     width: 150,
-  //     align: "center",
-  //     render: (_, record) => (
-  //       <>
-  //         <Button type="link" onClick={() => handleUpdateClick(record.categoryId)} icon={<EditOutlined />}>
-  //           Chỉnh sửa
-  //         </Button>
-  //         <Button type="link" danger onClick={() => handleDeleteClick(record.productID)} icon={<DeleteOutlined />}>
-  //           Xóa
-  //         </Button>
-  //       </>
-  //     ),
-  //   },
-  // ];
-
-  const filteredProducts = products.filter((product) => product.name?.toLowerCase().includes(searchTerm.toLowerCase()));
-
-  const activeProducts = products.filter((product) => product.isActive);
-  const inactiveProducts = products.filter((product) => !product.isActive);
-
-  const categories = [...new Set(products.map((product) => product.categoryName))];
+  const flowersflowers = [...new Set(flowerData.map((flower) => flower.flowerType))];
 
   const customLocale = {
     triggerDesc: "Nhấn để sắp xếp giảm dần",
@@ -289,23 +208,23 @@ const ProductList = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Sản phẩm</h1>
-      <div style={{ display: "flex", justifyContent: "end", marginBottom: "20px" }}>
-        {/* <Select
+      <h1>Quản lý Hoa</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+        <Select
           defaultValue=""
           style={{ width: 200, borderColor: "#F56285" }}
           onChange={(value) => setSelectedCategory(value)}
         >
           <Option value="">Tất cả danh mục</Option>
-          {categories.map((category) => (
-            <Option key={category} value={category}>
-              {category}
+          {flowersflowers.map((flower) => (
+            <Option key={flower} value={flower}>
+              {flower}
             </Option>
           ))}
-        </Select> */}
-        <NavLink to="/banhang/add-product">
+        </Select>
+        <NavLink to="/banhang/add-flower">
           <Button type="primary" style={{ background: "#1a1a1a", borderColor: "#1fe879" }} icon={<PlusOutlined />}>
-            Thêm 1 sản phẩm mới
+            Thêm hoa
           </Button>
         </NavLink>
       </div>
@@ -318,9 +237,9 @@ const ProductList = () => {
       <Tabs defaultActiveKey="all" onChange={handleTabChange}>
         <TabPane tab="Tất cả" key="all">
           <Table
-            columns={columns}
+            columns={columnFlowers}
             dataSource={filteredProducts} // Đảm bảo là mảng
-            rowKey="categoryId"
+            rowKey="flowerId"
             locale={customLocale}
             pagination={{
               pageSize: 10,
@@ -334,9 +253,9 @@ const ProductList = () => {
         </TabPane>
         <TabPane tab="Đang Hoạt Động" key="active">
           <Table
-            columns={columns}
-            dataSource={Array.isArray(activeProducts) ? activeProducts : []}
-            rowKey="categoryId"
+            columns={columnFlowers}
+            dataSource={activeflower}
+            rowKey="flowerId"
             locale={customLocale}
             pagination={{ pageSize: 10 }}
           />
@@ -344,9 +263,9 @@ const ProductList = () => {
 
         <TabPane tab="Không Hoạt Động" key="inactive">
           <Table
-            columns={columns}
-            dataSource={Array.isArray(inactiveProducts) ? inactiveProducts : []}
-            rowKey="categoryId"
+            columns={columnFlowers}
+            dataSource={inactiveflower}
+            rowKey="flowerId"
             locale={customLocale}
             pagination={{ pageSize: 10 }}
           />
@@ -365,14 +284,14 @@ const ProductList = () => {
           )}
         </TabPane> */}
       </Tabs>
-      <UpdateProduct
+      <UpdateFlower
         visible={updateModalVisible}
         onCancel={() => setUpdateModalVisible(false)}
-        categoryId={selectedCategoryId}
+        flowerId={selectedCategoryId}
         refetch={refetch}
       />
     </div>
   );
 };
 
-export default ProductList;
+export default FlowerList;

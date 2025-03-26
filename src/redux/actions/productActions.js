@@ -40,19 +40,19 @@ export const fetchProducts = (products) => {
 export const getAllProducts = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(
-        "https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/product/get-all"
-      );
+      const response = await axios.get("http://localhost:8080/custom-florist/api/v1/categories?page=0&size=50");
       if (response.status !== 200) {
         throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
       }
-      const products = response.data;
+      const catelogry = response.data;
+      console.log("catelogry", catelogry);
+
       dispatch({
         type: GET_ALL_PRODUCTS,
-        payload: products,
+        payload: catelogry,
       });
-      console.log(products);
-      return products;
+      console.log("catelogry", catelogry);
+      return catelogry;
     } catch (error) {
       console.error("Fetch all products failed:", error);
       return Promise.reject(error);
@@ -60,49 +60,49 @@ export const getAllProducts = () => {
   };
 };
 
-export const getProductByStatusTrue = () => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.get(
-        "https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/product/products/status?productStatus=true"
-      );
-      if (response.status !== 200) {
-        throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
-      }
-      const products = response.data;
-      dispatch({
-        type: GET_ALL_PRODUCTS,
-        payload: products,
-      });
-      return products;
-    } catch (error) {
-      console.error("Fetch all products failed:", error);
-      return Promise.reject(error);
-    }
-  };
-};
+// export const getProductByStatusTrue = () => {
+//   return async (dispatch) => {
+//     try {
+//       const response = await axios.get(
+//         "https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/product/products/status?productStatus=true"
+//       );
+//       if (response.status !== 200) {
+//         throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
+//       }
+//       const products = response.data;
+//       dispatch({
+//         type: GET_ALL_PRODUCTS,
+//         payload: products,
+//       });
+//       return products;
+//     } catch (error) {
+//       console.error("Fetch all products failed:", error);
+//       return Promise.reject(error);
+//     }
+//   };
+// };
 
-export const getProductByStatusFalse = () => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.get(
-        "https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/product/products/status?productStatus=false"
-      );
-      if (response.status !== 200) {
-        throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
-      }
-      const products = response.data;
-      dispatch({
-        type: GET_ALL_PRODUCTS,
-        payload: products,
-      });
-      return products;
-    } catch (error) {
-      console.error("Fetch all products failed:", error);
-      return Promise.reject(error);
-    }
-  };
-};
+// export const getProductByStatusFalse = () => {
+//   return async (dispatch) => {
+//     try {
+//       const response = await axios.get(
+//         "https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/product/products/status?productStatus=false"
+//       );
+//       if (response.status !== 200) {
+//         throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
+//       }
+//       const products = response.data;
+//       dispatch({
+//         type: GET_ALL_PRODUCTS,
+//         payload: products,
+//       });
+//       return products;
+//     } catch (error) {
+//       console.error("Fetch all products failed:", error);
+//       return Promise.reject(error);
+//     }
+//   };
+// };
 
 export const createProduct = (productRequest, imageFiles) => {
   return async (dispatch) => {
@@ -140,26 +140,20 @@ export const createProduct = (productRequest, imageFiles) => {
   };
 };
 
-export const updateProduct = (productID, productRequest, imageFiles) => {
+export const updateProduct = (productID, productRequest) => {
   return async (dispatch) => {
+    console.log("productRequest", productRequest);
+
     try {
       // Tạo FormData để đính kèm JSON và file ảnh
-      const formData = new FormData();
-
-      // Thêm productRequest dưới dạng JSON string
-      formData.append("productRequest", JSON.stringify(productRequest));
-
-      imageFiles.forEach((file) => {
-        formData.append("imageFiles", file);
-      });
 
       const response = await axios.put(
-        `https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/product/update-product/${productID}`,
-        formData,
+        `http://localhost:8080/custom-florist/api/v1/categories/${productID}`,
+        productRequest,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         }
       );

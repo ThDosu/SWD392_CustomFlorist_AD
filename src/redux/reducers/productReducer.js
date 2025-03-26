@@ -1,11 +1,21 @@
-import { FETCH_PRODUCTS_SUCCESS, GET_ALL_PRODUCTS, GET_PRODUCTS_BY_ID, UPDATE_PRODUCT_SUCCESS, DELETE_PRODUCT_SUCCESS, GET_PRODUCTS_BY_STOREID_BY_SELLER, GET_PRODUCTS_BY_STOREID_WITH_STATUS } from "../actions/productActions";
+import {
+  FETCH_PRODUCTS_SUCCESS,
+  GET_ALL_PRODUCTS,
+  GET_PRODUCTS_BY_ID,
+  UPDATE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_SUCCESS,
+  GET_PRODUCTS_BY_STOREID_BY_SELLER,
+  GET_PRODUCTS_BY_STOREID_WITH_STATUS,
+} from "../actions/productActions";
 
 const initState = {
   products: null,
+  catelories: null,
   selectedProduct: null,
+  selectedCategory: null,
   isAuthorized: false,
   loading: false,
-  error: null
+  error: null,
 };
 
 const productReducer = (state = initState, action) => {
@@ -18,16 +28,18 @@ const productReducer = (state = initState, action) => {
         error: null,
       };
     case GET_ALL_PRODUCTS:
+      console.log("Reducer action received:", action.payload); // Kiểm tra dữ liệu trước khi cập nhật state
+
       return {
         ...state,
-        products: action.payload,
+        catelories: action.payload,
         loading: false,
         error: null,
       };
     case GET_PRODUCTS_BY_ID:
       return {
         ...state,
-        selectedProduct: action.payload,
+        selectedCategory: action.payload,
         loading: false,
         error: null,
       };

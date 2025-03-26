@@ -8,6 +8,8 @@ import { Path } from "../../constants/path";
 import { loginAccount } from "../../redux/actions/authenticationActions";
 import { roles } from "../../types/roles";
 import "./LoginRegister.css";
+
+import Logo from "../../assets/fonts/Logo.jpeg";
 const Login = () => {
   // eslint-disable-next-line no-undef
   const [redirect, setRedirect] = useState(false);
@@ -61,7 +63,7 @@ const Login = () => {
     <div
       className="login-page"
       style={{
-        backgroundImage: `url('https://firebasestorage.googleapis.com/v0/b/bloom-gift-67f83.appspot.com/o/element-layout%2Flogo%2Fbanner-authen-seller.png?alt=media&token=d2e8f34e-6f92-4ef7-b5b0-fc2ddb17b478')`,
+        backgroundImage: `${Logo}`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "100vh",

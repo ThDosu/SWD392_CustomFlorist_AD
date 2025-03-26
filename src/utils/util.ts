@@ -1,32 +1,25 @@
-import React from "react";
+// import axios, { AxiosError } from "axios";
+// import { HttpStatusCode } from "../constants/HttpStatusCode.enum";
+// import { ErrorResponse } from "../types/utils.type";
 
-// Định nghĩa kiểu trạng thái đơn hàng
-type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "completed" | "cancelled";
+// // type redicate
+// export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
+//   return axios.isAxiosError(error as any);
+// }
 
-// Hàm trả về một <span> với màu phù hợp
-const renderOrderStatus = (status?: string): JSX.Element => {
-  if (!status) return <span style={{ color: "gray", fontWeight: "bold" }}>Không xác định</span>;
+// //  đây là hàm dùng để check lỗi có phải 422
+// export function isAxiosUnprocessableEntityError<FromError>(error: unknown): error is AxiosError<FromError> {
+//   return isAxiosError(error) && error.response?.status === HttpStatusCode.UnprocessableEntity;
+// }
 
-  // Chuyển trạng thái về chữ thường để tránh lỗi nhập sai định dạng
-  const normalizedStatus = status.toLowerCase() as OrderStatus;
-
-  // Map trạng thái với màu và nhãn hiển thị
-  const statusMap: Record<OrderStatus, { color: string; label: string }> = {
-    pending: { color: "orange", label: "Chờ xác nhận" },
-    processing: { color: "blue", label: "Đang xử lý" },
-    shipped: { color: "purple", label: "Đang giao hàng" },
-    delivered: { color: "cyan", label: "Đã giao hàng" },
-    completed: { color: "green", label: "Hoàn thành" },
-    cancelled: { color: "red", label: "Đã hủy" },
-  };
-
-  // Kiểm tra trạng thái hợp lệ, nếu không có thì trả về mặc định
-  const { color, label } = statusMap[normalizedStatus] || {
-    color: "gray",
-    label: "Không xác định",
-  };
-
-  return <span style={{ color, fontWeight: "bold" }}>{label}</span>;
-};
-
-export default renderOrderStatus;
+// //  đây là hàm dùng để check lỗi có phải 401
+// export function isAxiosUnauthorizedError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+//   return isAxiosError(error) && error.response?.status === HttpStatusCode.Unauthorized;
+// }
+// //  đây là hàm dùng để check lỗi có phải 401
+// export function isAxiosExpiredTokenError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+//   return (
+//     isAxiosUnauthorizedError<ErrorResponse<{ name: string; message: string }>>(error) &&
+//     error.response?.data.data?.name === "EXPIRED_TOKEN"
+//   );
+// }

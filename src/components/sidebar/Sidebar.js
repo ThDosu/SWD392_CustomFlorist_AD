@@ -2,12 +2,23 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { NavLink } from "react-router-dom";
-import { House, Gem, Heart, Box, BarChart, BoxArrowRight, BoxSeam, PlusCircle } from "react-bootstrap-icons";
+import {
+  House,
+  Gem,
+  Heart,
+  Box,
+  BarChart,
+  BoxArrowRight,
+  BoxSeam,
+  PlusCircle,
+  User,
+  People,
+  Flower2,
+} from "react-bootstrap-icons";
 import Header from "./HeaderSidebar";
 
 const SalerSidebar = ({ children }) => {
   const [collapsed, setCollapsed] = React.useState(false);
-
   const handleToggle = () => {
     setCollapsed(!collapsed);
   };
@@ -50,12 +61,24 @@ const SalerSidebar = ({ children }) => {
               Thống Kê
             </MenuItem>
 
+            <MenuItem style={{ paddingLeft: "0px" }} icon={<People />} component={<NavLink to="/banhang/all-user" />}>
+              Quản Lý Người Dùng
+            </MenuItem>
+
             <MenuItem
               style={{ paddingLeft: "0px" }}
               icon={<Box />}
               component={<NavLink to="/banhang/payment-management" />}
             >
               Quản Lý Hóa Đơn
+            </MenuItem>
+
+            <MenuItem
+              style={{ paddingLeft: "0px" }}
+              icon={<Flower2 />}
+              component={<NavLink to="/banhang/flower-management" />}
+            >
+              Quản Lý Hoa
             </MenuItem>
 
             <MenuItem
@@ -82,7 +105,11 @@ const SalerSidebar = ({ children }) => {
               Quản Lý Khuyến Mãi
             </MenuItem>
 
-            <SubMenu label="Quản Lý Cửa Hàng " style={{ paddingLeft: "0px" }} icon={<BoxSeam />}>
+            <MenuItem style={{ paddingLeft: "0px" }} icon={<Box />} component={<NavLink to="/banhang/shop-profile" />}>
+              Hồ Sơ Shop
+            </MenuItem>
+
+            {/* <SubMenu label="Quản Lý Cửa Hàng " style={{ paddingLeft: "0px" }} icon={<BoxSeam />}>
               <MenuItem
                 style={{ paddingLeft: "15px" }}
                 icon={<Box />}
@@ -98,7 +125,7 @@ const SalerSidebar = ({ children }) => {
               >
                 Thiết Lập Tiền Ship
               </MenuItem>
-            </SubMenu>
+            </SubMenu> */}
           </Menu>
         </div>
       </Sidebar>

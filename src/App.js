@@ -20,6 +20,9 @@ import SalerSidebar from "./components/sidebar/Sidebar";
 import ScrollToTop from "./helpers/scroll-top";
 import LoginPage from "./pages/other/Login";
 import SignInWithGoogle from "./pages/other/SignInWithGoogle";
+import UserList from "./components/sidebar/UserManager/UserList";
+import FlowerList from "./components/sidebar/FLowerManager/FLowerList";
+import AddFlower from "./components/sidebar/FLowerManager/AddFlower";
 
 // // home pages
 // const HomeFashion = lazy(() => import("./pages/home/HomeFashion"));
@@ -163,6 +166,8 @@ const App = (props) => {
                     <Switch>
                       <Route path="/banhang/dashboard" component={Dashboard} />
                       <Route path="/banhang/shop-management" component={ShopManagement} />
+                      <Route path="/banhang/flower-management" component={FlowerList} />
+                      <Route path="/banhang/add-flower" component={AddFlower} />
                       <Route path="/banhang/shop-profile" component={StoreProfile} />
                       <Route path="/banhang/all-products" component={ProductList} />
                       <Route path="/banhang/order-management" component={OrderList} />
@@ -170,6 +175,7 @@ const App = (props) => {
                       <Route path="/banhang/shipping-fee-settings" component={DistanseFeeList} />
                       <Route path="/banhang/add-product" component={AddProduct} />
                       <Route path="/banhang/all-promotion" component={PromotionList} />
+                      <Route path="/banhang/all-user" component={UserList} />
                     </Switch>
                   </SalerSidebar>
                 </Route>
