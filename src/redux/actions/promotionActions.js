@@ -21,9 +21,9 @@ export const getAllPromotions = () => {
       if (response.status !== 200) {
         throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
       }
-      console.log("response", response.data);
+      console.log("response", response.data.data);
 
-      const promotions = response.data;
+      const promotions = response.data.data;
 
       dispatch({
         type: GET_ALL_PROMOTIONS,
@@ -86,7 +86,10 @@ export const getPromotionById = (promotionID) => {
       if (response.status !== 200) {
         throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
       }
-      const promotion = response.data;
+      const promotion = response.data.data;
+
+      console.log("promotionId", promotion);
+
       dispatch({
         type: GET_PROMOTION_BY_ID,
         payload: promotion,
@@ -160,7 +163,10 @@ export const deletePromotion = (promotionID) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      if (response.status !== 204) {
+
+      console.log("status", response.status);
+
+      if (response.status !== 200) {
         throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
       }
       dispatch({

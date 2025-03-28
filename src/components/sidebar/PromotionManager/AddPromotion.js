@@ -9,12 +9,10 @@ const AddPromotion = () => {
 
   const onFinish = (values) => {
     const promotionRequest = {
-      id: values.promotionCode,
       code: values.promotionName,
       discountPercentage: values.promotionDiscount,
       validFrom: moment(values.startDate).format("YYYY-MM-DD"),
       validTo: moment(values.endDate).format("YYYY-MM-DD"),
-      bouquetId: values.bouquetId,
       active: true,
     };
 
@@ -37,13 +35,6 @@ const AddPromotion = () => {
       <h2 style={{ textAlign: "center", marginBottom: 30, color: "#1fe879" }}>Thêm Khuyến Mãi</h2>
       <Form onFinish={onFinish}>
         <Form.Item
-          name="promotionCode"
-          label="Mã khuyến mãi"
-          rules={[{ required: true, message: "Vui lòng nhập mã khuyến mãi!" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
           name="promotionName"
           label="Tên khuyến mãi"
           rules={[{ required: true, message: "Vui lòng nhập tên khuyến mãi!" }]}
@@ -51,9 +42,6 @@ const AddPromotion = () => {
           <Input />
         </Form.Item>
 
-        <Form.Item name="bouquetId" label="Mã bó hoa" rules={[{ required: true, message: "Vui lòng nhập mã!" }]}>
-          <Input />
-        </Form.Item>
         {/* <Form.Item
           name="promotionStatus"
           label="Trạng thái"
@@ -66,7 +54,7 @@ const AddPromotion = () => {
           label="Giảm giá (%)"
           rules={[{ required: true, message: "Vui lòng nhập giảm giá!" }]}
         >
-          <InputNumber min={0} max={1} step={0.01} />
+          <InputNumber min={0} max={10} step={0.01} />
         </Form.Item>
         {/* <Form.Item name="quantity" label="Số lượng" rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}>
           <InputNumber min={0} />

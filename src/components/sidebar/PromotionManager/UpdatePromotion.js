@@ -22,10 +22,9 @@ const UpdatePromotion = ({ promotionID, visible, onClose }) => {
     if (selectedPromotion) {
       form.setFieldsValue({
         code: selectedPromotion.code,
-        id: selectedPromotion.id,
         active: selectedPromotion.active,
         discountPercentage: selectedPromotion.discountPercentage,
-        bouquetId: selectedPromotion.bouquetId || "Không có",
+
         validFrom: selectedPromotion.validFrom
           ? moment(new Date(selectedPromotion.validFrom)).format("YYYY-MM-DD")
           : null,
@@ -71,9 +70,9 @@ const UpdatePromotion = ({ promotionID, visible, onClose }) => {
           <Input placeholder="Nhập tên khuyến mãi" />
         </Form.Item>
 
-        <Form.Item name="id" label="Mã khuyến mãi" rules={[{ required: true, message: "Vui lòng nhập mã khuyến mãi" }]}>
+        {/* <Form.Item name="id" label="Mã khuyến mãi" rules={[{ required: true, message: "Vui lòng nhập mã khuyến mãi" }]}>
           <Input placeholder="Nhập mã khuyến mãi" />
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           name="active"
@@ -93,21 +92,6 @@ const UpdatePromotion = ({ promotionID, visible, onClose }) => {
           rules={[{ required: true, message: "Vui lòng nhập phần trăm giảm giá" }]}
         >
           <Input placeholder="Nhập phần trăm giảm giá" type="number" />
-        </Form.Item>
-
-        <Form.Item
-          name="bouquetId"
-          label="Mã hoa"
-          rules={[{ required: true, message: "Vui lòng nhập mã hoa" }]}
-          initialValue={selectedPromotion.bouquetId ? selectedPromotion.bouquetId : ""}
-        >
-          <Input
-            placeholder="Không có"
-            type="number"
-            onChange={(e) => {
-              form.setFieldsValue({ bouquetId: e.target.value || "" });
-            }}
-          />
         </Form.Item>
 
         <Form.Item

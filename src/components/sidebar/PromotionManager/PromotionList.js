@@ -91,10 +91,10 @@ const PromotionList = () => {
 
   const columns = [
     {
-      title: "Mã bó hoa",
-      dataIndex: "bouquetId",
-      key: "bouquetId",
-      render: (text) => <span>{text || "N/A"}</span>,
+      title: "Mã khuyến mãi",
+      dataIndex: "id",
+      key: "id",
+      align: "center",
     },
     {
       title: "Tên khuyến mãi",
@@ -102,12 +102,7 @@ const PromotionList = () => {
       key: "code",
       render: (text) => <span>{text || "N/A"}</span>,
     },
-    {
-      title: "Mã khuyến mãi",
-      dataIndex: "id",
-      key: "id",
-      align: "center",
-    },
+
     // {
     //   title: "Mô tả",
     //   dataIndex: "promotionDescription",

@@ -259,7 +259,7 @@ const PaymentList = () => {
         />
       </div>
       <Input
-        placeholder="Tìm kiếm theo tên cửa hàng hoặc ngân hàng"
+        placeholder="Tìm kiếm theo mã giao dịch"
         onChange={(e) => setSearchTerm(e.target.value)}
         style={{ marginBottom: "20px", borderColor: "#1fe879" }}
         suffix={<SearchOutlined className="text-lg text-gray-400" />}
