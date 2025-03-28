@@ -52,6 +52,7 @@ export const ordersApi = {
       console.log("id", id);
 
       const response = await http.get(`orders/${id}`);
+      console.log("resres", response);
 
       if (response.status !== 200) {
         throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);

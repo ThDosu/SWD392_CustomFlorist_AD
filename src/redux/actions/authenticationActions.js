@@ -47,7 +47,7 @@ export const registerAccount = (userData, addToast) => {
 export const loginAccount = (userData, addToast) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post("http://localhost:8080/custom-florist/api/v1/users/login", {
+      const response = await axios.post(`${config.baseUrl}users/login`, {
         email: userData.email,
         password: userData.password,
       });
